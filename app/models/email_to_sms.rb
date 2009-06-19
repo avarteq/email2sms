@@ -7,12 +7,22 @@ class EmailToSms
   @@SENT_SMS_MAILBOX = "sent_sms"
   @@FILTERED_MAILBOX = "filtered"
 
-  def initialize
+  @@ENVIRONMENT_MOCK = 2
+  @@ENVIRONMENT_PRODUCTION = 1
+
+  @@FROM_ENCODING   = "ISO-8859-1"
+  @@TARGET_ENCODING = "MacRoman"
+
+  def initialize(environment = @@ENVIRONMENT_MOCK)
+
+    @environment = environment
     @filter_chain = FilterChain.build_simple_filter_chain
     @sms_service = SmsService::SmsService.new("bjuler222@t-online.de", "Sho3eig5")
 
     @imap = Net::IMAP.new('mail.railshoster.de')
     @imap.authenticate('LOGIN', 'sms2email@railshoster.de', 'The2Ieto')
+
+    @decoder = QuotedPrintable.new
 
     status_or_create_send_sms_mailbox
     status_or_create_filtered_mailbox
@@ -22,7 +32,7 @@ class EmailToSms
   def dispatch
 
     @imap.select('INBOX')
-    
+
     puts "Starting to process emails..."
     @imap.search(["UNSEEN"]).each do |message_id|
       envelope = @imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
@@ -39,7 +49,7 @@ class EmailToSms
 
         send_email_as_sms(message_id, envelope)
       end
-    end        
+    end
   end
 
   # Close imap connection
@@ -65,7 +75,26 @@ class EmailToSms
     # Cut sms to 140 characters
     sms_text = email_text[0, 140]
 
-    @sms_service.send_sms(@@RECEIVER, email_from + "\n" + envelope.subject + "\n" + sms_text, "Email2Sms", ServiceEnvironment.PRODUCTION)
+    final_sms_message = email_from + "\n" + envelope.subject + "\n" + sms_text
+
+    if @environment == @@ENVIRONMENT_PRODUCTION then
+
+      @sms_service.send_sms(@@RECEIVER, final_sms_message, "Email2Sms", ServiceEnvironment.PRODUCTION)
+    else
+
+      puts "\n\n-----------------------"
+      puts "E-Mail message:"
+      puts envelope.inspect
+      puts "-----------------------\n\n"
+
+
+      # MOCK environment so we don't send any sms just print it out
+      puts "\n\n-----------------------"
+      puts "Text message:"
+      puts @decoder.unquote_quoted_printable_and_convert_to(final_sms_message, @@TARGET_ENCODING, @@FROM_ENCODING )
+      puts "-----------------------\n\n"
+
+    end
 
     # Copy mail to sent_sms folder
     move_email(message_id, @@SENT_SMS_MAILBOX)
@@ -80,10 +109,10 @@ class EmailToSms
 
   # Move a mail from the current to the given mailbox.
   def move_email(message_id, mailbox)
-    
+
     # Copy mail to sent_sms folder
     @imap.copy(message_id, mailbox)
-    delete_email(message_id)      
+    delete_email(message_id)
   end
 
   # A mailbox is an imap folder.
@@ -130,6 +159,15 @@ class EmailToSms
     end
 
     return ret
+  end
+  
+
+  def self.ENVIRONMENT_MOCK
+    return @@ENVIRONMENT_MOCK
+  end
+
+  def self.ENVIRONMENT_PRODUCTION
+    return @@ENVIRONMENT_PRODUCTION
   end
 end
 

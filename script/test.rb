@@ -13,6 +13,9 @@ require File.dirname(__FILE__) + '/../app/models/' + 'email_to_sms'
 require File.dirname(__FILE__) + '/../app/models/' + 'filter_chain'
 require File.dirname(__FILE__) + '/../app/models/' + 'basic_filter'
 require File.dirname(__FILE__) + '/../app/models/' + 'subject_filter'
+require File.dirname(__FILE__) + '/../app/models/' + 'quoted_printable'
+
+Net::IMAP.debug = true
 
 email2sms = EmailToSms.new
 
