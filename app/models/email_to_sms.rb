@@ -1,7 +1,10 @@
 require 'net/imap'
+require File.dirname(__FILE__) + '/imap/imap_tools'
 
 
 class EmailToSms
+
+  include Imap::ImapTools
 
   @@RECEIVER = "0177-3383539"
   @@SENT_SMS_MAILBOX = "sent_sms"
@@ -11,7 +14,7 @@ class EmailToSms
   @@ENVIRONMENT_PRODUCTION = 1
 
   @@FROM_ENCODING   = "ISO-8859-1"
-  @@TARGET_ENCODING = "MacRoman"
+  @@TARGET_ENCODING = "ISO-8859-1"
 
   def initialize(environment = @@ENVIRONMENT_MOCK)
 
@@ -35,7 +38,7 @@ class EmailToSms
 
     puts "Starting to process emails..."
     @imap.uid_search(["UNSEEN"]).each do |uid|
-      
+
       # Get the email in rfc822 format
       mail_rfc822 = @imap.uid_fetch(uid, 'RFC822')[0].attr['RFC822']
 
@@ -64,7 +67,17 @@ class EmailToSms
     @imap.disconnect
   end
 
-  protected 
+  protected
+
+  # A mailbox is an imap folder.
+  def status_or_create_send_sms_mailbox
+    status_or_create_mailbox(@@SENT_SMS_MAILBOX)
+  end
+
+  # A mailbox is an imap folder.
+  def status_or_create_filtered_mailbox
+    status_or_create_mailbox(@@FILTERED_MAILBOX)
+  end
 
   def send_email_as_sms(uid, tmail)
 
@@ -73,6 +86,7 @@ class EmailToSms
     if @environment == @@ENVIRONMENT_PRODUCTION then
 
       @sms_service.send_sms(@@RECEIVER, final_sms_message, "Email2Sms", ServiceEnvironment.PRODUCTION)
+      puts "Text message has ben sent."
     else
 
       puts "\n\n-----------------------"
@@ -102,68 +116,6 @@ class EmailToSms
     else
       return tmail.body(@@TARGET_ENCODING)
     end
-  end
-
-  #### IMAP operations
-
-  # Deletes the email with the given uid
-  def delete_email(uid)
-    @imap.uid_store(uid, "+FLAGS", [:Deleted])
-    @imap.expunge
-  end
-
-  # Move a mail from the current to the given mailbox.
-  def move_email(uid, mailbox)
-
-    # Copy mail to sent_sms folder
-    @imap.uid_copy(uid, mailbox)
-    delete_email(uid)
-  end
-
-  # A mailbox is an imap folder.
-  def status_or_create_send_sms_mailbox
-    status_or_create_mailbox(@@SENT_SMS_MAILBOX)
-  end
-
-  # A mailbox is an imap folder.
-  def status_or_create_filtered_mailbox
-    status_or_create_mailbox(@@FILTERED_MAILBOX)
-  end
-
-  # Checks whether the given mailbox exists and creates it if not.
-  # If it exists it will be selected.
-  #TODO check imap protocoll if there isn't a better way to do this.
-  # === Parameters
-  # <tt>mailbox</tt>:: Name of the mailbox (imap folder)
-  # <tt>raise_on_select</tt>:: Raise an exception if a select is not possible. This also skips creation of the mailbox. Used for internal purposes.
-  def status_or_create_mailbox(mailbox, raise_on_select = false)
-    ret = nil
-
-    begin
-
-      ret = @imap.status(mailbox, ["MESSAGES", "RECENT", "UNSEEN"])
-
-      # Mailbox already exist
-    rescue Net::IMAP::NoResponseError => e
-
-      # The mailbox does not exist (or is non-selectable for some reason)
-      unless raise_on_select
-
-        # So we create it
-        @imap.create(mailbox)
-
-        puts "Created mailbox #{mailbox}."
-
-        # And select it
-        status_or_create_mailbox(mailbox, true)
-      else
-        # For some reasons the creation/selection of the mailbox failed.
-        # In order to avoid an infinte loop we give up after trying to create and select the mailbox once.
-        raise e
-      end
-    end
-
-    return ret
   end
 
 

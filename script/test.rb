@@ -19,7 +19,7 @@ require File.dirname(__FILE__) + '/../app/models/' + 'quoted_printable'
 
 Net::IMAP.debug = true
 
-email2sms = EmailToSms.new
+email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
 
 #while(true) do
   email2sms.dispatch
