@@ -5,7 +5,7 @@ class SubjectFilter < BasicFilter
   PASSWORD = "Aihie4ca6a"
 
   # Returns true if password is present
-  def passed_filter?(envelope)
-    return !envelope.subject.match(PASSWORD).nil?
+  def passed_filter?(tmail)
+    return !tmail.subject.match(PASSWORD).nil?
   end
 end

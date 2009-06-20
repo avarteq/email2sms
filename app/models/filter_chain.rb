@@ -17,10 +17,10 @@ class FilterChain
   end
 
   # Execute each filter, stop of a filter rejects the mail
-  def passed_filter?(envelope)
+  def passed_filter?(tmail)
     ret = true
     for filter in @filters do
-      if not filter.passed_filter?(envelope) then
+      if not filter.passed_filter?(tmail) then
         ret = false
         break
       end

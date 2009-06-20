@@ -34,21 +34,27 @@ class EmailToSms
     @imap.select('INBOX')
 
     puts "Starting to process emails..."
-    @imap.search(["UNSEEN"]).each do |message_id|
-      envelope = @imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
+    @imap.uid_search(["UNSEEN"]).each do |uid|
+      
+      # Get the email in rfc822 format
+      mail_rfc822 = @imap.uid_fetch(uid, 'RFC822')[0].attr['RFC822']
 
-      passed = @filter_chain.passed_filter?(envelope)
+      # A TMail object hides all the quoting and parsing stuff
+      tmail = TMail::Mail.parse( mail_rfc822 )
+
+      passed = @filter_chain.passed_filter?(tmail)
 
       if not passed then
         puts "E-mail wurde ausgefiltert."
 
         # Move email to the filtered mailbox
-        move_email(message_id, @@FILTERED_MAILBOX)
+        move_email(uid, @@FILTERED_MAILBOX)
       else
         puts "E-mail wird versendet."
 
-        send_email_as_sms(message_id, envelope)
+        send_email_as_sms(uid, tmail)
       end
+
     end
   end
 
@@ -58,25 +64,11 @@ class EmailToSms
     @imap.disconnect
   end
 
-  protected
+  protected 
 
-  def send_email_as_sms(message_id, envelope)
+  def send_email_as_sms(uid, tmail)
 
-    email_from = envelope.from[0].name
-    puts "#{email_from}: \t#{envelope.subject}"
-
-    # Get the mail
-    email_body = @imap.fetch(message_id, 'BODY[TEXT]')
-
-    # This is the actual email text
-    email_text = email_body[0].attr['BODY[TEXT]']
-
-    #TODO make configurable Ticket #1148
-    # Cut sms to 140 characters
-    sms_text = email_text[0, 140]
-  
-    subject = @decoder.unquote_and_convert_to(envelope.subject, @@TARGET_ENCODING, @@FROM_ENCODING )    
-    final_sms_message = subject #email_from + "\n" + subject + "\n" + sms_text
+    final_sms_message = tmail_to_plaintext(tmail)
 
     if @environment == @@ENVIRONMENT_PRODUCTION then
 
@@ -85,35 +77,46 @@ class EmailToSms
 
       puts "\n\n-----------------------"
       puts "E-Mail message:"
-      puts envelope.inspect
+      puts tmail_to_plaintext(tmail)
       puts "-----------------------\n\n"
-
 
       # MOCK environment so we don't send any sms just print it out
       puts "\n\n-----------------------"
       puts "Text message:"
       puts final_sms_message
       puts "-----------------------\n\n"
-
     end
 
     # Copy mail to sent_sms folder
-    move_email(message_id, @@SENT_SMS_MAILBOX)
+    move_email(uid, @@SENT_SMS_MAILBOX)
   end
 
+  # If it is a multipart email with a plain text part
+  # it searches for the text/plain part of the mail and returns it.
+  def tmail_to_plaintext(tmail)
+    if tmail.multipart?
+      tmail.parts.each do |part|
+        return part.body(@@TARGET_ENCODING) if part.content_type == 'text/plain'
+      end
+    else
+      return tmail.body(@@TARGET_ENCODING)
+    end
+  end
 
-  # Deletes the email with the given message_id
-  def delete_email(message_id)
-    @imap.store(message_id, "+FLAGS", [:Deleted])
+  #### IMAP operations
+
+  # Deletes the email with the given uid
+  def delete_email(uid)
+    @imap.uid_store(uid, "+FLAGS", [:Deleted])
     @imap.expunge
   end
 
   # Move a mail from the current to the given mailbox.
-  def move_email(message_id, mailbox)
+  def move_email(uid, mailbox)
 
     # Copy mail to sent_sms folder
-    @imap.copy(message_id, mailbox)
-    delete_email(message_id)
+    @imap.uid_copy(uid, mailbox)
+    delete_email(uid)
   end
 
   # A mailbox is an imap folder.
@@ -161,7 +164,10 @@ class EmailToSms
 
     return ret
   end
-  
+
+
+  #### Public static methods
+
 
   def self.ENVIRONMENT_MOCK
     return @@ENVIRONMENT_MOCK
