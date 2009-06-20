@@ -74,8 +74,9 @@ class EmailToSms
     #TODO make configurable Ticket #1148
     # Cut sms to 140 characters
     sms_text = email_text[0, 140]
-
-    final_sms_message = email_from + "\n" + envelope.subject + "\n" + sms_text
+  
+    subject = @decoder.unquote_and_convert_to(envelope.subject, @@TARGET_ENCODING, @@FROM_ENCODING )    
+    final_sms_message = subject #email_from + "\n" + subject + "\n" + sms_text
 
     if @environment == @@ENVIRONMENT_PRODUCTION then
 
@@ -91,7 +92,7 @@ class EmailToSms
       # MOCK environment so we don't send any sms just print it out
       puts "\n\n-----------------------"
       puts "Text message:"
-      puts @decoder.unquote_quoted_printable_and_convert_to(final_sms_message, @@TARGET_ENCODING, @@FROM_ENCODING )
+      puts final_sms_message
       puts "-----------------------\n\n"
 
     end

@@ -1,6 +1,8 @@
 # Source code taken from actionmailer-1.3.5/lib/action_mailer/vendor/tmail/quoting.rb
 class QuotedPrintable
-   def unquote_and_convert_to(text, to_charset, from_charset = "iso-8859-1", preserve_underscores=false)
+
+  # For strings like "=?ISO-8859-1?Q?Aihie4ca6a_=FCber_=E4ndern_=F6sterreich?=" 
+  def unquote_and_convert_to(text, to_charset, from_charset = "iso-8859-1", preserve_underscores=false)
     return "" if text.nil?
     text.gsub(/(.*?)(?:(?:=\?(.*?)\?(.)\?(.*?)\?=)|$)/) do
       before = $1
@@ -25,6 +27,7 @@ class QuotedPrintable
     end
   end
 
+  # For strings like "=FCber_=E4ndern_=F6sterreich"
   def unquote_quoted_printable_and_convert_to(text, to, from, preserve_underscores=false)
     text = text.gsub(/_/, " ") unless preserve_underscores
     text = text.gsub(/\r\n|\r/, "\n") # normalize newlines

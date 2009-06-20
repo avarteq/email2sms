@@ -3,10 +3,13 @@ require File.dirname(__FILE__) + '/../../app/models/quoted_printable'
 
 class EncodingTest < Test::Unit::TestCase
 
+  @@FROM_ENCODING   = "ISO-8859-1"
+  @@TARGET_ENCODING = "MacRoman"
+
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    # Do nothing
+    @decoder = QuotedPrintable.new
   end
 
   # Called after every test method runs. Can be used to tear
@@ -17,12 +20,16 @@ class EncodingTest < Test::Unit::TestCase
   end
 
   def test_decode
-
+    puts "\n\n---------\nDecoded:"
+    puts @decoder.decode("=?ISO-8859-1?Q?Aihie4ca6a_=FCber_=E4ndern_=F6sterreich?=", @@TARGET_ENCODING, @@FROM_ENCODING )
+    puts @decoder.decode("=FCber_=E4ndern_=F6sterreich", @@TARGET_ENCODING, @@FROM_ENCODING )
+    puts @decoder.decode("=F6", "MacRoman", "ISO-8859-1" )
+    puts "---------\n\n"
     # puts unquote_quoted_printable_and_convert_to("=F6", "MacRoman", "ISO-8859-1" )
   end
 
 
- 
+
 
 
 
