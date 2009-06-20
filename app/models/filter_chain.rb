@@ -29,9 +29,9 @@ class FilterChain
     return ret
   end
 
-  def self.build_simple_filter_chain
+  def self.build_simple_filter_chain(charset = "UTF-8")
     filter_chain = self.new
-    filter_chain << SubjectFilter.new()
+    filter_chain << SubjectFilter.new("Aihie4ca6a", charset)
 
     return filter_chain
   end

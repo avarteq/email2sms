@@ -16,7 +16,7 @@ class EmailToSms
   def initialize(environment = @@ENVIRONMENT_MOCK)
 
     @environment = environment
-    @filter_chain = FilterChain.build_simple_filter_chain
+    @filter_chain = FilterChain.build_simple_filter_chain(@@TARGET_ENCODING)
     @sms_service = SmsService::SmsService.new("bjuler222@t-online.de", "Sho3eig5")
 
     @imap = Net::IMAP.new('mail.railshoster.de')
@@ -77,6 +77,7 @@ class EmailToSms
 
       puts "\n\n-----------------------"
       puts "E-Mail message:"
+      puts tmail.subject
       puts tmail_to_plaintext(tmail)
       puts "-----------------------\n\n"
 

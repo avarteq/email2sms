@@ -2,10 +2,23 @@
 # passwort is not present.
 class SubjectFilter < BasicFilter
 
-  PASSWORD = "Aihie4ca6a"
+  def initialize(password, charset = "UTF-8")
+    super(charset)
+    @password = password
+  end
 
-  # Returns true if password is present
+  # Returns true if password is present.
+  # Password will be removed from the subject.
   def passed_filter?(tmail)
-    return !tmail.subject.match(PASSWORD).nil?
+    password_is_present = !tmail.subject.match(@password).nil?
+
+    password_matcher = Regexp.new("#{@password}\s+")
+    
+    if password_is_present then
+      # Remove password from the subject
+      tmail.subject = tmail.subject(@charset).gsub(password_matcher, "")
+    end
+    
+    return password_is_present
   end
 end
