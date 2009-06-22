@@ -10,8 +10,8 @@ class EmailToSms
   @@ENVIRONMENT_MOCK = 2
   @@ENVIRONMENT_PRODUCTION = 1
 
-  @@FROM_ENCODING   = "ISO-8859-1"
-  @@TARGET_ENCODING = "MacRoman"
+  @@FROM_ENCODING   = ""
+  @@TARGET_ENCODING = "ISO-8859-15" #MacRoman
 
   def initialize(environment = @@ENVIRONMENT_MOCK)
 
