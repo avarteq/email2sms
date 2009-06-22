@@ -21,10 +21,10 @@ Net::IMAP.debug = true
 
 email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
 
-#while(true) do
+while(true) do
   email2sms.dispatch
-#  sleep 2
-#end
+  sleep 2
+end
 
 email2sms.close
 

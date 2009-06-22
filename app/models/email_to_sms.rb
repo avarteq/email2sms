@@ -12,14 +12,13 @@ class EmailToSms
 
   @@ENVIRONMENT_MOCK = 2
   @@ENVIRONMENT_PRODUCTION = 1
-
-  @@FROM_ENCODING   = "ISO-8859-1"
-  @@TARGET_ENCODING = "UTF-8"
+  
+  @@CHARSET = "UTF-8"
 
   def initialize(environment = @@ENVIRONMENT_MOCK)
 
     @environment = environment
-    @filter_chain = FilterChain.build_simple_filter_chain(@@TARGET_ENCODING)
+    @filter_chain = FilterChain.build_simple_filter_chain(@@CHARSET)
     @sms_service = SmsService::SmsService.new("bjuler222@t-online.de", "Sho3eig5")
 
     @imap = Net::IMAP.new('mail.railshoster.de')
@@ -45,6 +44,8 @@ class EmailToSms
       # A TMail object hides all the quoting and parsing stuff
       tmail = TMail::Mail.parse( mail_rfc822 )
 
+      # Only mails passing all filters will be delivered.
+      # Be aware that filters might modify the mail.
       passed = @filter_chain.passed_filter?(tmail)
 
       if not passed then
@@ -69,6 +70,8 @@ class EmailToSms
 
   protected
 
+  #### non public methods
+
   # A mailbox is an imap folder.
   def status_or_create_send_sms_mailbox
     status_or_create_mailbox(@@SENT_SMS_MAILBOX)
@@ -83,9 +86,11 @@ class EmailToSms
 
     final_sms_message = tmail_to_plaintext(tmail)
 
+    receiver = get_receiver_from_subject(tmail)
+
     if @environment == @@ENVIRONMENT_PRODUCTION then
 
-      @sms_service.send_sms(@@RECEIVER, final_sms_message, "Email2Sms", ServiceEnvironment.PRODUCTION)
+      @sms_service.send_sms(receiver, final_sms_message, "Email2Sms", ServiceEnvironment.PRODUCTION)
       puts "Text message has ben sent."
     else
 
@@ -97,7 +102,7 @@ class EmailToSms
 
       # MOCK environment so we don't send any sms just print it out
       puts "\n\n-----------------------"
-      puts "Text message:"
+      puts "Text message to #{receiver}:"
       puts final_sms_message
       puts "-----------------------\n\n"
     end
@@ -106,15 +111,20 @@ class EmailToSms
     move_email(uid, @@SENT_SMS_MAILBOX)
   end
 
+  # Extracts the receiver's number from the email subject
+  def get_receiver_from_subject(tmail)
+    return tmail.subject(@@CHARSET).strip    
+  end
+
   # If it is a multipart email with a plain text part
   # it searches for the text/plain part of the mail and returns it.
   def tmail_to_plaintext(tmail)
     if tmail.multipart?
       tmail.parts.each do |part|
-        return part.body(@@TARGET_ENCODING) if part.content_type == 'text/plain'
+        return part.body(@@CHARSET) if part.content_type == 'text/plain'
       end
     else
-      return tmail.body(@@TARGET_ENCODING)
+      return tmail.body(@@CHARSET)
     end
   end
 
