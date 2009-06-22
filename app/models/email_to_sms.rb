@@ -14,7 +14,7 @@ class EmailToSms
   @@ENVIRONMENT_PRODUCTION = 1
 
   @@FROM_ENCODING   = "ISO-8859-1"
-  @@TARGET_ENCODING = "ISO-8859-1"
+  @@TARGET_ENCODING = "UTF-8"
 
   def initialize(environment = @@ENVIRONMENT_MOCK)
 
