@@ -17,10 +17,10 @@ class FilterChain
   end
 
   # Execute each filter, stop of a filter rejects the mail
-  def passed_filter?(envelope)
+  def passed_filter?(tmail)
     ret = true
     for filter in @filters do
-      if not filter.passed_filter?(envelope) then
+      if not filter.passed_filter?(tmail) then
         ret = false
         break
       end
@@ -29,9 +29,9 @@ class FilterChain
     return ret
   end
 
-  def self.build_simple_filter_chain
+  def self.build_simple_filter_chain(charset = "UTF-8")
     filter_chain = self.new
-    filter_chain << SubjectFilter.new()
+    filter_chain << SubjectFilter.new("Aihie4ca6a", charset)
 
     return filter_chain
   end

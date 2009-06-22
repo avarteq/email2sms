@@ -1,6 +1,10 @@
 class BasicFilter
-  
-  def passed_filter?(envelope)
+
+  def initialize(charset = "UTF-8")
+    @charset = charset
+  end
+
+  def passed_filter?(tmail)
     raise "unimplemented"
   end
 end
