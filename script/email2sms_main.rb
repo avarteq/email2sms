@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-#require File.dirname(__FILE__) + '/../config/boot'
+
+# Load Rails environment
 #require File.join(File.dirname(__FILE__),"..","config", "environment")
 
 
@@ -14,16 +15,16 @@ require File.dirname(__FILE__) + '/../app/models/' + 'email_to_sms'
 require File.dirname(__FILE__) + '/../app/models/' + 'filter_chain'
 require File.dirname(__FILE__) + '/../app/models/' + 'basic_filter'
 require File.dirname(__FILE__) + '/../app/models/' + 'subject_filter'
-require File.dirname(__FILE__) + '/../app/models/' + 'quoted_printable'
 
+Net::IMAP.debug = true if $DEBUG
 
-Net::IMAP.debug = true
+CONFIG = YAML.load_file(File.dirname(__FILE__) + "/../config/email2sms.yml")
 
 email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
 
-while(true) do
+loop do
   email2sms.dispatch
-  sleep 2
+  sleep CONFIG["imap"]["poll_interval"]
 end
 
 email2sms.close

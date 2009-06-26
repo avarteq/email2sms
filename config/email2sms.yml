@@ -1,0 +1,12 @@
+general:
+    default_charset: "UTF-8"
+dev_garden:
+    user: "bjuler222@t-online.de"
+    pass: "Sho3eig5"
+imap:
+    server_host: 'mail.railshoster.de'
+    user: 'sms2email@railshoster.de'
+    pass: 'The2Ieto'
+    poll_interval: 30
+sms:
+    sender_name: "Email2Sms"

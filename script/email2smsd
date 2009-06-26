@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'daemons'
+require 'email2sms_main.rb'
+
+Daemons.start('email2sms_main.rb')

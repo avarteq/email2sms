@@ -6,25 +6,29 @@ class EmailToSms
 
   include Imap::ImapTools
 
-  @@RECEIVER = "0177-3383539"
   @@SENT_SMS_MAILBOX = "sent_sms"
   @@FILTERED_MAILBOX = "filtered"
 
   @@ENVIRONMENT_MOCK = 2
   @@ENVIRONMENT_PRODUCTION = 1
-  
-  @@CHARSET = "UTF-8"
+
+  @@CONFIG = YAML.load_file(File.dirname(__FILE__) + "/../../config/email2sms.yml")
 
   def initialize(environment = @@ENVIRONMENT_MOCK)
 
+    @charset = @@CONFIG["general"]["default_charset"]
     @environment = environment
-    @filter_chain = FilterChain.build_simple_filter_chain(@@CHARSET)
-    @sms_service = SmsService::SmsService.new("bjuler222@t-online.de", "Sho3eig5")
+    @filter_chain = FilterChain.build_simple_filter_chain(@charset)
 
-    @imap = Net::IMAP.new('mail.railshoster.de')
-    @imap.authenticate('LOGIN', 'sms2email@railshoster.de', 'The2Ieto')
+    dev_garden_user = @@CONFIG["dev_garden"]["user"]
+    dev_garden_pass = @@CONFIG["dev_garden"]["pass"]
+    @sms_service = SmsService::SmsService.new(dev_garden_user, dev_garden_pass)
 
-    @decoder = QuotedPrintable.new
+    @imap = Net::IMAP.new(@@CONFIG["imap"]["server_host"])
+
+    imap_user = @@CONFIG["imap"]["user"]
+    imap_pass = @@CONFIG["imap"]["pass"]
+    @imap.authenticate('LOGIN', imap_user, imap_pass)
 
     status_or_create_send_sms_mailbox
     status_or_create_filtered_mailbox
@@ -86,11 +90,15 @@ class EmailToSms
 
     final_sms_message = tmail_to_plaintext(tmail)
 
+    # Shorten message
+    final_sms_message = final_sms_message.strip![0, 150]
+
     receiver = get_receiver_from_subject(tmail)
 
     if @environment == @@ENVIRONMENT_PRODUCTION then
 
-      @sms_service.send_sms(receiver, final_sms_message, "Email2Sms", ServiceEnvironment.PRODUCTION)
+      sms_sender_name = @@CONFIG["sms"]["sender_name"]
+      @sms_service.send_sms(receiver, final_sms_message, sms_sender_name, ServiceEnvironment.PRODUCTION)
       puts "Text message has ben sent."
     else
 
@@ -113,7 +121,7 @@ class EmailToSms
 
   # Extracts the receiver's number from the email subject
   def get_receiver_from_subject(tmail)
-    return tmail.subject(@@CHARSET).strip    
+    return tmail.subject(@charset).strip
   end
 
   # If it is a multipart email with a plain text part
@@ -121,10 +129,10 @@ class EmailToSms
   def tmail_to_plaintext(tmail)
     if tmail.multipart?
       tmail.parts.each do |part|
-        return part.body(@@CHARSET) if part.content_type == 'text/plain'
+        return part.body(@charset) if part.content_type == 'text/plain'
       end
     else
-      return tmail.body(@@CHARSET)
+      return tmail.body(@charset)
     end
   end
 

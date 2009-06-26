@@ -41,3 +41,11 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
+
+DEV_GARDEN_USER     = "bjuler222@t-online.de"
+DEV_GARDEN_PASS     = "Sho3eig5"
+IMAP_SERVER_HOST    = 'mail.railshoster.de'
+IMAP_USER           = 'sms2email@railshoster.de'
+IMAP_PASS           = 'The2Ieto'
+DEFAULT_CHARSET     = "UTF-8"
+SMS_SENDER_NAME     = "Email2Sms"
