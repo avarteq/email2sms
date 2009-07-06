@@ -1,7 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+gem 'daemons'
 require 'daemons'
-require 'email2sms_main.rb'
 
-Daemons.start('email2sms_main.rb')
+daemon_options =  {
+  :backtrace  => true,
+  :log_output => true
+}
+
+Daemons.run(File.dirname(__FILE__) + '/' + 'email2sms_main.rb', daemon_options)

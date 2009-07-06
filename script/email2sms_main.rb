@@ -16,16 +16,27 @@ require File.dirname(__FILE__) + '/../app/models/' + 'filter_chain'
 require File.dirname(__FILE__) + '/../app/models/' + 'basic_filter'
 require File.dirname(__FILE__) + '/../app/models/' + 'subject_filter'
 
+# Catching the exit signal and 
+Signal.trap(0, proc do
+  puts "Stopping email2sms"
+  email2sms.close
+end
+)
+
 Net::IMAP.debug = true if $DEBUG
 
+puts "Loading email2sms config file"
 CONFIG = YAML.load_file(File.dirname(__FILE__) + "/../config/email2sms.yml")
 
-email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
+puts "Creating email2sms main class"
+#email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
 
+puts "Entering dispatch loop"
 loop do
-  email2sms.dispatch
+#  email2sms.dispatch
+  puts "."
   sleep CONFIG["imap"]["poll_interval"]
 end
 
-email2sms.close
+
 

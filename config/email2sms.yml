@@ -7,6 +7,6 @@ imap:
     server_host: 'mail.railshoster.de'
     user: 'sms2email@railshoster.de'
     pass: 'The2Ieto'
-    poll_interval: 30
+    poll_interval: 3
 sms:
     sender_name: "Email2Sms"
