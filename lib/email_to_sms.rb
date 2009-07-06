@@ -12,7 +12,7 @@ class EmailToSms
   @@ENVIRONMENT_MOCK = 2
   @@ENVIRONMENT_PRODUCTION = 1
 
-  @@CONFIG = YAML.load_file(File.dirname(__FILE__) + "/../../config/email2sms.yml")
+  @@CONFIG = YAML.load_file(File.dirname(__FILE__) + "/../config/email2sms.yml")
 
   def initialize(environment = @@ENVIRONMENT_MOCK)
 

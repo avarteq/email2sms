@@ -11,10 +11,10 @@ require 'voice_call_service/voice_call_service'
 require 'quota_service/quota_service'
 require 'tmail'
 
-require File.dirname(__FILE__) + '/../app/models/' + 'email_to_sms'
-require File.dirname(__FILE__) + '/../app/models/' + 'filter_chain'
-require File.dirname(__FILE__) + '/../app/models/' + 'basic_filter'
-require File.dirname(__FILE__) + '/../app/models/' + 'subject_filter'
+require File.dirname(__FILE__) + '/../lib/' + 'email_to_sms'
+require File.dirname(__FILE__) + '/../lib/' + 'filter_chain'
+require File.dirname(__FILE__) + '/../lib/' + 'basic_filter'
+require File.dirname(__FILE__) + '/../lib/' + 'subject_filter'
 
 # Catching the exit signal and 
 Signal.trap(0, proc do
