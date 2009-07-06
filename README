@@ -1,0 +1,20 @@
+= Requirements
+* telekom_sdk
+* IMAP Mailbox
+* DeveloperGarden Account with credits (developergarden.com)
+
+= Usage
+== Configuration
+ Setup variables in config/email2sms.yml
+
+== Start
+ script/email2smsd start
+
+== Stop
+ script/email2smsd start
+
+Watch output in
+ log/email2sms_main.rb.output
+and
+ log/email2sms_main.rb.log
+for detailed application state information and errors.

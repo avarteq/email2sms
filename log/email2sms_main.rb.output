@@ -186,3 +186,17 @@ Stopping email2sms
 	from /opt/local/lib/ruby/gems/1.8/gems/daemons-1.0.10/lib/daemons/cmdline.rb:105:in `catch_exceptions'
 	from /opt/local/lib/ruby/gems/1.8/gems/daemons-1.0.10/lib/daemons.rb:138:in `run'
 	from script/email2smsd:14
+Loading email2sms config file
+Creating email2sms main class
+Entering dispatch loop
+.
+Starting to process emails...
+.
+Starting to process emails...
+.
+Starting to process emails...
+E-mail wird versendet.
+Text message has ben sent.
+.
+Starting to process emails...
+Stopping email2sms
