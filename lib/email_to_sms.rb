@@ -18,7 +18,7 @@ class EmailToSms
 
     @charset = @@CONFIG["general"]["default_charset"]
     @environment = environment
-    @filter_chain = FilterChain.build_simple_filter_chain(@charset)
+    @filter_chain = FilterChain.build_simple_filter_chain(@@CONFIG, @charset)
 
     dev_garden_user = @@CONFIG["dev_garden"]["user"]
     dev_garden_pass = @@CONFIG["dev_garden"]["pass"]
@@ -71,7 +71,7 @@ class EmailToSms
     @imap.close
     @imap.disconnect
   end
-
+ 
   protected
 
   #### non public methods

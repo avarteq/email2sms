@@ -29,12 +29,12 @@ puts "Loading email2sms config file"
 CONFIG = YAML.load_file(File.dirname(__FILE__) + "/../config/email2sms.yml")
 
 puts "Creating email2sms main class"
-#email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
+email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
 
 puts "Entering dispatch loop"
 loop do
-#  email2sms.dispatch
   puts "."
+  email2sms.dispatch
   sleep CONFIG["imap"]["poll_interval"]
 end
 

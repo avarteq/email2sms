@@ -1,7 +1,8 @@
 class FilterChain
 
-  def initialize
+  def initialize(config)
     @filters = []
+    @config = config
   end
 
   def <<(filter)
@@ -29,9 +30,11 @@ class FilterChain
     return ret
   end
 
-  def self.build_simple_filter_chain(charset = "UTF-8")
-    filter_chain = self.new
-    filter_chain << SubjectFilter.new("Aihie4ca6a", charset)
+  def self.build_simple_filter_chain(config, charset = "UTF-8")
+    filter_chain = self.new(config)
+    
+    subject_filter_password = config["filter_chain"]["subject_filter"]["password"]
+    filter_chain << SubjectFilter.new(subject_filter_password, charset)
 
     return filter_chain
   end
