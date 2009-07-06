@@ -6,7 +6,9 @@ require 'daemons'
 
 daemon_options =  {
   :backtrace  => true,
-  :log_output => true
+  :log_output => true,
+  :dir_mode   => :normal,
+  :dir        => File.dirname(__FILE__) + "/../log/"
 }
 
-Daemons.run(File.dirname(__FILE__) + '/' + 'email2sms_main.rb', daemon_options)
+Daemons.run(File.dirname(__FILE__) + '/../lib/' + 'email2sms_main.rb', daemon_options)
