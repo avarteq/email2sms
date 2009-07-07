@@ -18,3 +18,15 @@ Watch output in
 and
  log/email2sms_main.rb.log
 for detailed application state information and errors.
+
+== Send e-mail
+In order to send an sms just drop an email to your email adress configured in the email2sms.yml file.
+If you use the subject filter then you will need to have the password in your subject line:
+
+Subject:
+mypass +49177 12344567
+
+Message body:
+Whatever
+
+That's it. Have fun!
