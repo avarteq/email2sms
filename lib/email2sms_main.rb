@@ -11,7 +11,7 @@ require File.dirname(__FILE__) + '/../lib/' + 'mail/imap_tools'
 require File.dirname(__FILE__) + '/../lib/' + 'email_to_sms'
 require File.dirname(__FILE__) + '/../lib/' + 'filter/filter_chain'
 require File.dirname(__FILE__) + '/../lib/' + 'filter/basic_filter'
-require File.dirname(__FILE__) + '/../lib/' + 'subject_filter'
+require File.dirname(__FILE__) + '/../lib/' + 'filter/subject_filter'
 
 # Catching the exit signal and 
 Signal.trap(0, proc do
