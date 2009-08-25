@@ -1,19 +1,16 @@
 #!/usr/bin/env ruby
 
-# Load Rails environment
-#require File.join(File.dirname(__FILE__),"..","config", "environment")
-
-
 require 'rubygems'
-gem 'telekom_sdk'
+gem 'developergarden_sdk'
 require 'sms_service/sms_service'
-require 'voice_call_service/voice_call_service'
 require 'quota_service/quota_service'
 require 'tmail'
 
+require File.dirname(__FILE__) + '/../lib/' + 'mail/tmail_tools'
+require File.dirname(__FILE__) + '/../lib/' + 'mail/imap_tools'
 require File.dirname(__FILE__) + '/../lib/' + 'email_to_sms'
-require File.dirname(__FILE__) + '/../lib/' + 'filter_chain'
-require File.dirname(__FILE__) + '/../lib/' + 'basic_filter'
+require File.dirname(__FILE__) + '/../lib/' + 'filter/filter_chain'
+require File.dirname(__FILE__) + '/../lib/' + 'filter/basic_filter'
 require File.dirname(__FILE__) + '/../lib/' + 'subject_filter'
 
 # Catching the exit signal and 
