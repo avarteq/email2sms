@@ -51,7 +51,7 @@ h1. Contact
 
 Avarteq GmbH
 Julian Fischer
-fischer@avarteq.de
+email2sms@avarteq.de
 "www.avarteq.de":http://www.avarteq.de
 
 Also checkout our hosting services:
