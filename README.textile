@@ -46,3 +46,15 @@ Message body:
 Whatever
 
 That's it. Have fun!
+
+h1. Contact
+Avarteq GmbH
+Julian Fischer
+fischer@avarteq.de
+"www.avarteq.de":http://www.avarteq.de
+
+Also checkout our hosting services:
+"www.railshoster.de":http://www.railshoster.de
+and
+"www.enterprise-rails.de":http://www.enterprise-rails.de
+
