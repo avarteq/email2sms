@@ -3,12 +3,13 @@
 require 'rubygems'
 gem 'daemons'
 require 'daemons'
+require File.dirname(__FILE__) + '/../lib/' + 'config.rb'
 
 daemon_options =  {
   :backtrace  => true,
   :log_output => true,
   :dir_mode   => :normal,
-  :dir        => Dir.pwd
+  :dir        => Config.logdir
 }
 
 Daemons.run(File.dirname(__FILE__) + '/../lib/' + 'email2sms_main.rb', daemon_options)

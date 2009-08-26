@@ -25,8 +25,6 @@ Net::IMAP.debug = true if $DEBUG
 
 CONFIG = Config.load
 
-puts CONFIG.inspect
-
 puts "Creating email2sms main class"
 email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
 

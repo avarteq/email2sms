@@ -13,3 +13,9 @@ sms:
 filter_chain:
     subject_filter:
         password: "Aihie4ca6a"
+log:
+    # dir_mode = normal => dir will be interpreted as dir
+    # dir_mode = current => dir will be ignored. Logs will go to the folder from where
+    #   the app has been started.
+    dir_mode: "normal"
+    dir: "default"

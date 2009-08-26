@@ -8,10 +8,8 @@ module Config
     config_file_path  = config_dir + "/" + config_filename
 
     # Check or create config dir
-    unless File.directory?(config_dir) then
-      FileUtils.mkdir(config_dir)  
-    end
-
+    exists_or_create_dir(config_dir)
+    
     # Check or create config file
     unless File.exists?(config_file_path) then
       config_file = File.new(config_file_path, "w+")
@@ -20,5 +18,27 @@ module Config
 
     config = YAML.load_file(config_file_path)
     config  
+  end
+  
+  def self.logdir
+    mylogdir = ""
+    config = self.load
+        
+    if config["log"]["dir_mode"] == "current" then
+      mylogdir = Dir.pwd
+    elsif config["log"]["dir_mode"] == "normal" then
+      mylogdir = config["log"]["dir"]      
+      exists_or_create_dir(mylogdir)
+    else
+      raise "Unknown log dir_mode #{config[:log][:dir_mode]}. Possible values are: 'current' and 'normal'."
+    end  
+    mylogdir
+  end
+  
+  protected
+  
+  # Checks whether the given dir exists. Creates it if not.
+  def self.exists_or_create_dir(dir)  
+    FileUtils.mkdir_p(dir) unless File.directory?(dir)
   end
 end
