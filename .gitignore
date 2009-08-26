@@ -1,6 +1,7 @@
 .idea
 nbproject/* 
 nbproject/**/*
+log/email2sms_main.rb.output
 log/*.log
 tmp/**/*
 log/*.pid 
