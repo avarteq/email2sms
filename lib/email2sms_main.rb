@@ -30,7 +30,6 @@ email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
 
 puts "Entering dispatch loop"
 loop do
-  puts "."
   email2sms.dispatch
   sleep CONFIG["imap"]["poll_interval"]
 end
