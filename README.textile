@@ -1,4 +1,6 @@
 h1. Requirements
+In order to run Email2sms you will need the following.
+
 h2. Required gems
 * developergarden_sdk
 * tmail
