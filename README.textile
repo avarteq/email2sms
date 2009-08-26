@@ -1,24 +1,31 @@
 h1. Requirements
+
 In order to run Email2sms you will need the following.
 
 h2. Required gems
+
 * developergarden_sdk
 * tmail
 
 h2. Other requirements
+
 * IMAP Mailbox
 * DeveloperGarden Account with credits (developergarden.com)
 
 h1. Usage
+
 Usage...
 
 h2. Configuration
+
  Setup variables in config/email2sms.yml
 
 h2. Start
+
  script/email2smsd start
 
 h2. Stop
+
  script/email2smsd start
 
 Watch output in
@@ -28,6 +35,7 @@ and
 for detailed application state information and errors.
 
 h2. Send e-mail
+
 In order to send an sms just drop an email to your email adress configured in the email2sms.yml file.
 If you use the subject filter then you will need to have the password in your subject line:
 
