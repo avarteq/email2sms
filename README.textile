@@ -48,6 +48,7 @@ Whatever
 That's it. Have fun!
 
 h1. Contact
+
 Avarteq GmbH
 Julian Fischer
 fischer@avarteq.de
