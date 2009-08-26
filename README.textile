@@ -1,8 +1,9 @@
 h1. Email2sms
 
+!http://farm3.static.flickr.com/2545/3859077628_55156d5b3e_t.jpg(Avarteq GmbH)!:http://www.avarteq.de
 Email2sms has been developed by "www.avarteq.de":http://www.avarteq.de.
 
-!http://farm3.static.flickr.com/2545/3859077628_55156d5b3e_m.jpg(Avarteq GmbH)!:http://www.avarteq.de
+Email2sms is a free and pure Ruby E-Mail to sms gateway including an extensible filterchain to filter and manipulate incoming emails before sending them as text messages.
 
 h1. Requirements
 
@@ -24,7 +25,8 @@ Usage...
 
 h2. Configuration
 
-Setup variables in 
+Setup variables in
+
 bc. config/email2sms.yml
 
 h2. Start
@@ -36,9 +38,11 @@ h2. Stop
 bc. script/email2smsd start
 
 Watch output in
+
 bc. log/email2sms_main.rb.output
 
 and
+
 bc.  log/email2sms_main.rb.log
 
 for detailed application state information and errors.
