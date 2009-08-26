@@ -10,7 +10,7 @@ class EmailToSms
   @@FILTERED_MAILBOX        = "filtered"
   @@ENVIRONMENT_MOCK        = 2
   @@ENVIRONMENT_PRODUCTION  = 1
-  @@CONFIG = YAML.load_file(File.dirname(__FILE__) + "/../config/email2sms.yml")
+  @@CONFIG = Config.load
 
   def initialize(environment = @@ENVIRONMENT_MOCK)
     @charset        = @@CONFIG["general"]["default_charset"]
@@ -22,6 +22,7 @@ class EmailToSms
     @imap           = Net::IMAP.new(@@CONFIG["imap"]["server_host"])
     imap_user       = @@CONFIG["imap"]["user"]
     imap_pass       = @@CONFIG["imap"]["pass"]
+    
     @imap.authenticate('LOGIN', imap_user, imap_pass)
     status_or_create_mailboxes
   end

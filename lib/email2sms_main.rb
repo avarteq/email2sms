@@ -6,6 +6,7 @@ require 'sms_service/sms_service'
 require 'quota_service/quota_service'
 require 'tmail'
 
+require File.dirname(__FILE__) + '/../lib/' + 'config.rb'
 require File.dirname(__FILE__) + '/../lib/' + 'mail/tmail_tools'
 require File.dirname(__FILE__) + '/../lib/' + 'mail/imap_tools'
 require File.dirname(__FILE__) + '/../lib/' + 'email_to_sms'
@@ -22,8 +23,9 @@ end
 
 Net::IMAP.debug = true if $DEBUG
 
-puts "Loading email2sms config file"
-CONFIG = YAML.load_file(File.dirname(__FILE__) + "/../config/email2sms.yml")
+CONFIG = Config.load
+
+puts CONFIG.inspect
 
 puts "Creating email2sms main class"
 email2sms = EmailToSms.new( EmailToSms.ENVIRONMENT_PRODUCTION )
@@ -33,6 +35,5 @@ loop do
   email2sms.dispatch
   sleep CONFIG["imap"]["poll_interval"]
 end
-
 
 

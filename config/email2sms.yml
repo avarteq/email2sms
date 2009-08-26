@@ -1,12 +1,12 @@
 general:
     default_charset: "UTF-8"
 dev_garden:
-    user: "bjuler222@t-online.de"
-    pass: "Sho3eig5"
+    user: "yourdevguser@t-online.de"
+    pass: "yourdevgpass"
 imap:
-    server_host: 'mail.railshoster.de'
-    user: 'sms2email@railshoster.de'
-    pass: 'The2Ieto'
+    server_host: 'mail.yourmailserver.de'
+    user: 'yourimapuser@yourdomain.de'
+    pass: 'yourimappass'
     poll_interval: 10
 sms:
     sender_name: "Email2Sms"
