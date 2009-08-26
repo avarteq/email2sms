@@ -10,6 +10,7 @@ h2. Other requirements
 * DeveloperGarden Account with credits (developergarden.com)
 
 h1. Usage
+Usage...
 
 h2. Configuration
  Setup variables in config/email2sms.yml
