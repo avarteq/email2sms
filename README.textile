@@ -18,6 +18,18 @@ h2. Required gems
 * developergarden_sdk
 * tmail
 
+h1. Installation
+
+If it is the first time you install a gem from github you might need to perform the following command:
+
+bc. gem sources -a http://gems.github.com
+
+Also have a lookt at "gems.github.com":http://gems.github.com/ for a brief introduction on how to install gems hosted by GitHub.
+
+In order to install the actual email2sms gem invoke the following command:
+
+bc. gem install avarteq-email2sms
+
 h1. Configuration
 
 The first time you start email2smd it will create the following directory:
