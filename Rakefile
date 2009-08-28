@@ -14,6 +14,7 @@ begin
     gem.executables = ["email2smsd"]
     gem.add_dependency("developergarden_sdk", "=0.0.8")
     gem.add_dependency("daemons", "=1.0.10")
+    gem.add_dependency("tmail", "=1.2.3.1")
     
     # gem.add_development_dependency 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
