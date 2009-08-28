@@ -29,8 +29,7 @@ Gem::Specification.new do |s|
      "lib/filter/filter_chain.rb",
      "lib/filter/subject_filter.rb",
      "lib/mail/imap_tools.rb",
-     "lib/mail/tmail_tools.rb",
-     "pkg/email2sms-0.2.0.gem"
+     "lib/mail/tmail_tools.rb"
   ]
   s.homepage = %q{http://github.com/avarteq/email2sms}
   s.rdoc_options = ["--charset=UTF-8"]
