@@ -3,6 +3,7 @@ nbproject/*
 nbproject/**/*
 log/email2sms_main.rb.output
 log/*.log
+pkg/*.gem
 tmp/**/*
 log/*.pid 
 db/schema.rb
