@@ -10,7 +10,12 @@ begin
     gem.email = "email2sms@avarteq.de"
     gem.homepage = "http://github.com/avarteq/email2sms"
     gem.authors = ["Julian Fischer"]
-    # gem.add_development_dependency "developergarden_sdk"
+    gem.bindir = "bin"
+    gem.executables = ["email2smsd"]
+    gem.add_dependency("developergarden_sdk", "=0.0.8")
+    gem.add_dependency("daemons", "=1.0.10")
+    
+    # gem.add_development_dependency 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError

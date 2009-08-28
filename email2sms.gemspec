@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{email2sms}
-  s.version = "0.4.0"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Julian Fischer"]
-  s.date = %q{2009-08-27}
+  s.date = %q{2009-08-28}
   s.default_executable = %q{email2smsd}
   s.description = %q{Free and pure Ruby E-Mail to sms gateway including an extensible filterchain to filter and manipulate incoming emails before sending them as text messages.}
   s.email = %q{email2sms@avarteq.de}
@@ -47,8 +47,14 @@ Gem::Specification.new do |s|
     s.specification_version = 2
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<developergarden_sdk>, ["= 0.0.8"])
+      s.add_runtime_dependency(%q<daemons>, ["= 1.0.10"])
     else
+      s.add_dependency(%q<developergarden_sdk>, ["= 0.0.8"])
+      s.add_dependency(%q<daemons>, ["= 1.0.10"])
     end
   else
+    s.add_dependency(%q<developergarden_sdk>, ["= 0.0.8"])
+    s.add_dependency(%q<daemons>, ["= 1.0.10"])
   end
 end
