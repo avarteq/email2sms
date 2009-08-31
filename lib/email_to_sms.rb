@@ -62,7 +62,7 @@ class EmailToSms
 
     # A TMail object hides all the quoting and parsing stuff
     tmail = TMail::Mail.parse( mail_rfc822 )    
-    tmail
+    return tmail
   end
 
   # Created needed imap folders
